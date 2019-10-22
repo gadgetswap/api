@@ -1,0 +1,52 @@
+{
+  "name": "gadgetswap-api",
+  "license": "MIT",
+  "private": true,
+  "author": {
+    "name": "Ali Zahid",
+    "email": "ali.zahid@live.com",
+    "url": "https://designplox.com"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "env-cmd ts-node-dev --ignore-watch node_modules --respawn --transpile-only --no-notify src/index.ts",
+    "generate": "graphql-codegen",
+    "lint": "eslint src --ext ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@typegoose/typegoose": "^6.0.4",
+    "apollo-server": "^2.9.7",
+    "bcrypt": "^3.0.6",
+    "graphql": "^14.5.8",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "mongoose": "^5.7.6",
+    "type-graphql": "^0.17.5"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/jsonwebtoken": "^8.3.5",
+    "@types/lodash": "^4.14.144",
+    "@types/mongoose": "^5.5.22",
+    "@typescript-eslint/eslint-plugin": "^2.5.0",
+    "@typescript-eslint/parser": "^2.5.0",
+    "env-cmd": "^10.0.1",
+    "eslint": "^6.5.1",
+    "eslint-config-prettier": "^6.4.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-simple-import-sort": "^4.0.0",
+    "eslint-plugin-sort-keys-fix": "^1.0.1",
+    "husky": "^3.0.9",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^2.0.0",
+    "ts-node-dev": "^1.0.0-pre.43",
+    "typescript": "^3.6.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}
