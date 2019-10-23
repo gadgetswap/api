@@ -1,10 +1,6 @@
 import { Field, ObjectType } from 'type-graphql'
 
-import { User } from './models'
-
-export interface Context {
-  user?: User
-}
+import { User } from '../models'
 
 @ObjectType()
 export class AuthResult {

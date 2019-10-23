@@ -7,7 +7,7 @@ import { connect } from 'mongoose'
 import { buildSchema } from 'type-graphql'
 
 import { authChecker, getUser } from './auth'
-import { AuthResolver, UserResolver } from './resolvers'
+import { resolvers } from './resolvers'
 import { Context } from './types'
 
 const main = async (): Promise<void> => {
@@ -24,7 +24,7 @@ const main = async (): Promise<void> => {
   const schema = await buildSchema({
     authChecker,
     dateScalarMode: 'isoDate',
-    resolvers: [AuthResolver, UserResolver]
+    resolvers
   })
 
   const server = new ApolloServer({

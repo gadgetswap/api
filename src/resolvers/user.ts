@@ -2,7 +2,7 @@ import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 
 import { createToken, signPassword, verifyPassword } from '../auth'
 import { User, UserModel } from '../models'
-import { AuthResult } from '../types'
+import { AuthResult } from '../types/graphql'
 
 @Resolver(User)
 export class UserResolver {
