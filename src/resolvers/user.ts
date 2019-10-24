@@ -1,7 +1,8 @@
-import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { Args, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 
 import { User } from '../models'
 import { UserService } from '../services'
+import { LoginArgs, RegisterArgs } from '../types/args'
 import { AuthResult } from '../types/graphql'
 
 @Resolver(User)
@@ -15,19 +16,14 @@ export class UserResolver {
   }
 
   @Mutation(() => AuthResult)
-  login(
-    @Arg('email') email: string,
-    @Arg('password') password: string
-  ): Promise<AuthResult> {
+  login(@Args() { email, password }: LoginArgs): Promise<AuthResult> {
     return this.service.login(email, password)
   }
 
   @Mutation(() => AuthResult)
-  register(
-    @Arg('name') name: string,
-    @Arg('email') email: string,
-    @Arg('password') password: string
-  ): Promise<AuthResult> {
+  register(@Args() { email, name, password }: RegisterArgs): Promise<
+    AuthResult
+  > {
     return this.service.register(name, email, password)
   }
 }

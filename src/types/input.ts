@@ -3,7 +3,7 @@ import { Field, InputType } from 'type-graphql'
 import { Gadget } from '../models'
 
 @InputType()
-export class GadgetInput implements Partial<Gadget> {
+export class CreateGadgetInput implements Partial<Gadget> {
   @Field()
   title!: string
 

@@ -1,7 +1,7 @@
 import { Service } from 'typedi'
 
 import { Gadget, GadgetModel, LocationModel, User } from '../models'
-import { GadgetInput } from '../types/input'
+import { CreateGadgetInput } from '../types/input'
 
 @Service()
 export class GadgetService {
@@ -20,7 +20,7 @@ export class GadgetService {
     return gadget
   }
 
-  async createGadget(user: User, data: GadgetInput): Promise<Gadget> {
+  async createGadget(user: User, data: CreateGadgetInput): Promise<Gadget> {
     const gadget = await GadgetModel.create({
       ...data,
       user

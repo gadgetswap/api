@@ -1,7 +1,8 @@
-import { Arg, Authorized, Ctx, Mutation, Resolver } from 'type-graphql'
+import { Args, Authorized, Ctx, Mutation, Resolver } from 'type-graphql'
 
 import { Comment, User } from '../models'
 import { CommentService } from '../services'
+import { CreateCommentArgs } from '../types/args'
 
 @Resolver(Comment)
 export class CommentResolver {
@@ -11,8 +12,7 @@ export class CommentResolver {
   @Authorized()
   createComment(
     @Ctx('user') user: User,
-    @Arg('gadgetId') gadgetId: string,
-    @Arg('body') body: string
+    @Args() { body, gadgetId }: CreateCommentArgs
   ): Promise<Comment> {
     return this.service.createComment(user, gadgetId, body)
   }
