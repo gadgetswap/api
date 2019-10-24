@@ -5,6 +5,7 @@ import 'reflect-metadata'
 import { ApolloServer } from 'apollo-server'
 import { connect } from 'mongoose'
 import { buildSchema } from 'type-graphql'
+import { Container } from 'typedi'
 
 import { authChecker, getUser } from './auth'
 import { resolvers } from './resolvers'
@@ -23,6 +24,7 @@ const main = async (): Promise<void> => {
 
   const schema = await buildSchema({
     authChecker,
+    container: Container,
     dateScalarMode: 'isoDate',
     resolvers
   })

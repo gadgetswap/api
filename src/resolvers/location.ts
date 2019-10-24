@@ -1,14 +1,15 @@
 import { Authorized, Query, Resolver } from 'type-graphql'
 
-import { Location, LocationModel } from '../models'
+import { Location } from '../models'
+import { LocationService } from '../services'
 
 @Resolver(Location)
 export class LocationResolver {
+  constructor(private readonly service: LocationService) {}
+
   @Query(() => [Location])
   @Authorized()
-  async locations(): Promise<Location[]> {
-    const locations = await LocationModel.find()
-
-    return locations
+  locations(): Promise<Location[]> {
+    return this.service.locations()
   }
 }

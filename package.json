@@ -23,7 +23,8 @@
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "mongoose": "^5.7.6",
-    "type-graphql": "^0.17.5"
+    "type-graphql": "^0.17.5",
+    "typedi": "^0.8.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",

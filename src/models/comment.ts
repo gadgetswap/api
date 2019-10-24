@@ -20,7 +20,6 @@ export class Comment {
   })
   body!: string
 
-  @Field(() => Gadget)
   @prop({
     ref: 'Gadget',
     required: true

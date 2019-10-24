@@ -1,9 +1,10 @@
+import { CommentResolver } from './comment'
 import { GadgetResolver } from './gadget'
 import { LocationResolver } from './location'
-import { AuthResolver, UserResolver } from './user'
+import { UserResolver } from './user'
 
 export const resolvers = [
-  AuthResolver,
+  CommentResolver,
   GadgetResolver,
   LocationResolver,
   UserResolver
