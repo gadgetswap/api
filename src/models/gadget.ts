@@ -7,37 +7,8 @@ import {
 } from '@typegoose/typegoose'
 import { Field, ID, ObjectType } from 'type-graphql'
 
+import { Comment } from './comment'
 import { User } from './user'
-
-@ObjectType()
-@modelOptions({
-  schemaOptions: {
-    timestamps: true
-  }
-})
-export class GadgetComment {
-  @Field(() => ID)
-  id!: string
-
-  @Field()
-  @prop({
-    required: true
-  })
-  body!: string
-
-  @Field(() => User)
-  @prop({
-    ref: 'User',
-    required: true
-  })
-  user!: Ref<User>
-
-  @Field()
-  createdAt!: Date
-
-  @Field()
-  updatedAt!: Date
-}
 
 @ObjectType()
 @modelOptions({
@@ -81,11 +52,18 @@ export class Gadget {
   })
   images!: string[]
 
-  @Field(() => [GadgetComment])
+  @Field(() => [Comment])
   @arrayProp({
-    itemsRef: GadgetComment
+    foreignField: 'gadget',
+    localField: '_id',
+    options: {
+      sort: {
+        createdAt: -1
+      }
+    },
+    ref: 'Comment'
   })
-  comments!: Ref<GadgetComment>[]
+  comments!: Ref<Comment>[]
 
   @Field(() => User)
   @prop({
@@ -101,5 +79,4 @@ export class Gadget {
   updatedAt!: Date
 }
 
-export const GadgetCommentModel = getModelForClass(GadgetComment)
 export const GadgetModel = getModelForClass(Gadget)

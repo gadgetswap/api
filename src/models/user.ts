@@ -25,7 +25,8 @@ export class User {
   email!: string
 
   @prop({
-    required: true
+    required: true,
+    select: true
   })
   password!: string
 
