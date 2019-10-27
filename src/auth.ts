@@ -7,12 +7,24 @@ import { sign, verify } from 'jsonwebtoken'
 import { get } from 'lodash'
 import { AuthChecker } from 'type-graphql'
 
-import { User, UserModel } from './models'
+import { helpers } from './lib'
+import { GadgetModel, User, UserModel } from './models'
 import { Context } from './types'
 
-export const authChecker: AuthChecker<Context> = ({
-  context: { user }
-}): boolean => !!user
+export const authChecker: AuthChecker<Context> = async (
+  { args: { gadgetId }, context: { user } },
+  roles
+): Promise<boolean> => {
+  if (user && roles.includes('gadget_owner')) {
+    const gadget = await GadgetModel.findById(gadgetId)
+
+    if (gadget) {
+      return helpers.equals(user.id, gadget.user)
+    }
+  }
+
+  return !!user
+}
 
 export const createToken = (user: User): string =>
   sign(

@@ -2,6 +2,8 @@ import { Service } from 'typedi'
 
 import { helpers } from '../lib'
 import {
+  Comment,
+  CommentModel,
   Gadget,
   GadgetModel,
   GadgetRequest,
@@ -13,25 +15,31 @@ import { CreateGadgetInput } from '../types/input'
 @Service()
 export class GadgetService {
   async gadget(gadgetId: string): Promise<Gadget> {
-    const gadget = await GadgetModel.findById(gadgetId)
-      .populate({
-        path: 'comments',
-        populate: {
-          path: 'user'
-        }
-      })
-      .populate({
-        path: 'requests',
-        populate: {
-          path: 'user'
-        }
-      })
+    const gadget = await GadgetModel.findById(gadgetId).select('-requests')
 
     if (!gadget) {
       throw new Error('Gadget not found')
     }
 
     return gadget
+  }
+
+  async gadgetComments(gadgetId: string): Promise<Comment[]> {
+    return CommentModel.find({
+      gadget: gadgetId
+    }).populate('user')
+  }
+
+  async gadgetRequests(gadgetId: string): Promise<GadgetRequest[]> {
+    const gadget = await GadgetModel.findById(gadgetId).populate(
+      'requests.user'
+    )
+
+    if (!gadget) {
+      throw new Error('Gadget not found')
+    }
+
+    return gadget.requests
   }
 
   async createGadget(user: User, data: CreateGadgetInput): Promise<Gadget> {
