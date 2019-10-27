@@ -27,6 +27,13 @@ export class GadgetRequest {
   })
   description!: string
 
+  @Field()
+  @prop({
+    default: GadgetRequestStatus.PENDING,
+    enum: Object.values(GadgetRequestStatus)
+  })
+  status!: string
+
   @Field(() => User)
   @prop({
     ref: 'User',
@@ -34,13 +41,6 @@ export class GadgetRequest {
     unique: true
   })
   user!: Ref<User>
-
-  @Field()
-  @prop({
-    default: GadgetRequestStatus.PENDING,
-    enum: Object.values(GadgetRequestStatus)
-  })
-  status!: string
 
   @Field()
   createdAt!: Date
@@ -85,12 +85,6 @@ export class Gadget {
   })
   country!: string
 
-  @Field(() => [String])
-  @arrayProp({
-    items: String
-  })
-  images!: string[]
-
   @Field(() => [Comment])
   @arrayProp({
     foreignField: 'gadget',
@@ -103,6 +97,12 @@ export class Gadget {
     ref: 'Comment'
   })
   comments!: Ref<Comment>[]
+
+  @Field(() => [String])
+  @arrayProp({
+    items: String
+  })
+  images!: string[]
 
   @Field(() => [GadgetRequest])
   @arrayProp({
