@@ -12,10 +12,10 @@ import { GadgetModel, User, UserModel } from '../models'
 import { Context } from '../types'
 
 export enum Roles {
-  OWNER = 'OWNER'
+  OWNER
 }
 
-export const authChecker: AuthChecker<Context> = async (
+export const authChecker: AuthChecker<Context, number> = async (
   { args: { gadgetId }, context: { user } },
   roles
 ): Promise<boolean> => {
