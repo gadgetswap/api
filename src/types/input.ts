@@ -2,6 +2,8 @@ import { Field, InputType, Int } from 'type-graphql'
 
 import { Gadget, Location } from '../models'
 
+// gadgets
+
 @InputType()
 export class CreateGadgetInput implements Partial<Gadget> {
   @Field()
@@ -16,6 +18,8 @@ export class CreateGadgetInput implements Partial<Gadget> {
   @Field(() => [String])
   images!: string[]
 }
+
+// locations
 
 @InputType()
 export class CreateLocationInput implements Partial<Location> {
