@@ -2,8 +2,6 @@ import { Service } from 'typedi'
 
 import { helpers } from '../lib'
 import {
-  Comment,
-  CommentModel,
   Gadget,
   GadgetModel,
   GadgetRequest,
@@ -22,12 +20,6 @@ export class GadgetService {
     }
 
     return gadget
-  }
-
-  async gadgetComments(gadgetId: string): Promise<Comment[]> {
-    return CommentModel.find({
-      gadget: gadgetId
-    }).populate('user')
   }
 
   async gadgetRequests(gadgetId: string): Promise<GadgetRequest[]> {
