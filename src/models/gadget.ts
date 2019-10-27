@@ -7,8 +7,47 @@ import {
 } from '@typegoose/typegoose'
 import { Field, ID, ObjectType } from 'type-graphql'
 
+import { GadgetRequestStatus } from '../types/graphql'
 import { Comment } from './comment'
 import { User } from './user'
+
+@ObjectType()
+@modelOptions({
+  schemaOptions: {
+    timestamps: true
+  }
+})
+export class GadgetRequest {
+  @Field(() => ID)
+  id!: string
+
+  @Field()
+  @prop({
+    required: true
+  })
+  description!: string
+
+  @Field(() => User)
+  @prop({
+    ref: 'User',
+    required: true,
+    unique: true
+  })
+  user!: Ref<User>
+
+  @Field()
+  @prop({
+    default: GadgetRequestStatus.PENDING,
+    enum: Object.values(GadgetRequestStatus)
+  })
+  status!: string
+
+  @Field()
+  createdAt!: Date
+
+  @Field()
+  updatedAt!: Date
+}
 
 @ObjectType()
 @modelOptions({
@@ -64,6 +103,12 @@ export class Gadget {
     ref: 'Comment'
   })
   comments!: Ref<Comment>[]
+
+  @Field(() => [GadgetRequest])
+  @arrayProp({
+    items: GadgetRequest
+  })
+  requests!: GadgetRequest[]
 
   @Field(() => User)
   @prop({

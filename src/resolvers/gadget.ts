@@ -1,8 +1,8 @@
 import { Args, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 
-import { Gadget, User } from '../models'
+import { Gadget, GadgetRequest, User } from '../models'
 import { GadgetService } from '../services'
-import { CreateGadgetArgs, GadgetArgs } from '../types/args'
+import { CreateGadgetArgs, GadgetArgs, RequestGadgetArgs } from '../types/args'
 
 @Resolver(Gadget)
 export class GadgetResolver {
@@ -21,5 +21,14 @@ export class GadgetResolver {
     @Args() { data }: CreateGadgetArgs
   ): Promise<Gadget> {
     return this.service.createGadget(user, data)
+  }
+
+  @Mutation(() => GadgetRequest)
+  @Authorized()
+  requestGadget(
+    @Ctx('user') user: User,
+    @Args() { description, gadgetId }: RequestGadgetArgs
+  ): Promise<GadgetRequest> {
+    return this.service.requestGadget(user, gadgetId, description)
   }
 }

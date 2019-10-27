@@ -1,4 +1,5 @@
 import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose'
+import { ObjectId } from 'bson'
 import { Field, ID, ObjectType } from 'type-graphql'
 
 @ObjectType()
@@ -8,6 +9,8 @@ import { Field, ID, ObjectType } from 'type-graphql'
   }
 })
 export class User {
+  _id!: ObjectId
+
   @Field(() => ID)
   id!: string
 

@@ -2,26 +2,7 @@ import { ArgsType, Field } from 'type-graphql'
 
 import { CreateGadgetInput } from './input'
 
-@ArgsType()
-export class CreateCommentArgs {
-  @Field()
-  body!: string
-
-  @Field()
-  gadgetId!: string
-}
-
-@ArgsType()
-export class GadgetArgs {
-  @Field()
-  gadgetId!: string
-}
-
-@ArgsType()
-export class CreateGadgetArgs {
-  @Field()
-  data!: CreateGadgetInput
-}
+// auth
 
 @ArgsType()
 export class LoginArgs {
@@ -42,4 +23,38 @@ export class RegisterArgs {
 
   @Field()
   password!: string
+}
+
+// comments
+
+@ArgsType()
+export class CreateCommentArgs {
+  @Field()
+  body!: string
+
+  @Field()
+  gadgetId!: string
+}
+
+// gadgets
+
+@ArgsType()
+export class GadgetArgs {
+  @Field()
+  gadgetId!: string
+}
+
+@ArgsType()
+export class CreateGadgetArgs {
+  @Field()
+  data!: CreateGadgetInput
+}
+
+@ArgsType()
+export class RequestGadgetArgs {
+  @Field()
+  description!: string
+
+  @Field()
+  gadgetId!: string
 }
