@@ -28,7 +28,7 @@ export class GadgetResolver {
   }
 
   @Query(() => [GadgetRequest])
-  @Authorized([Roles.OWNER])
+  @Authorized(Roles.OWNER)
   gadgetRequests(@Args() { gadgetId }: GadgetArgs): Promise<GadgetRequest[]> {
     return this.service.gadgetRequests(gadgetId)
   }
@@ -52,7 +52,7 @@ export class GadgetResolver {
   }
 
   @Mutation(() => Boolean)
-  @Authorized([Roles.OWNER])
+  @Authorized(Roles.OWNER)
   updateRequest(@Args()
   {
     gadgetId,
