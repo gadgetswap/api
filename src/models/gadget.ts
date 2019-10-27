@@ -27,7 +27,7 @@ export class GadgetRequest {
   })
   description!: string
 
-  @Field()
+  @Field(() => GadgetRequestStatus)
   @prop({
     default: GadgetRequestStatus.PENDING,
     enum: Object.values(GadgetRequestStatus)
@@ -37,8 +37,7 @@ export class GadgetRequest {
   @Field(() => User)
   @prop({
     ref: 'User',
-    required: true,
-    unique: true
+    required: true
   })
   user!: Ref<User>
 

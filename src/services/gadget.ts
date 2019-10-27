@@ -13,12 +13,19 @@ import { CreateGadgetInput } from '../types/input'
 @Service()
 export class GadgetService {
   async gadget(gadgetId: string): Promise<Gadget> {
-    const gadget = await GadgetModel.findById(gadgetId).populate({
-      path: 'comments',
-      populate: {
-        path: 'user'
-      }
-    })
+    const gadget = await GadgetModel.findById(gadgetId)
+      .populate({
+        path: 'comments',
+        populate: {
+          path: 'user'
+        }
+      })
+      .populate({
+        path: 'requests',
+        populate: {
+          path: 'user'
+        }
+      })
 
     if (!gadget) {
       throw new Error('Gadget not found')
@@ -61,6 +68,10 @@ export class GadgetService {
 
     if (!gadget) {
       throw new Error('Gadget not found')
+    }
+
+    if (helpers.equals(user.id, gadget.user)) {
+      throw new Error('You cannot request your own gadget')
     }
 
     const exists = gadget.requests.find(request =>
