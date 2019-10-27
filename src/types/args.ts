@@ -1,5 +1,6 @@
 import { ArgsType, Field } from 'type-graphql'
 
+import { GadgetRequestStatus } from './graphql'
 import { CreateGadgetInput } from './input'
 
 // auth
@@ -39,6 +40,12 @@ export class CreateCommentArgs {
 // gadgets
 
 @ArgsType()
+export class GadgetsArgs {
+  @Field()
+  locationId!: string
+}
+
+@ArgsType()
 export class GadgetArgs {
   @Field()
   gadgetId!: string
@@ -57,4 +64,16 @@ export class RequestGadgetArgs {
 
   @Field()
   gadgetId!: string
+}
+
+@ArgsType()
+export class UpdateRequestArgs {
+  @Field()
+  gadgetId!: string
+
+  @Field()
+  requestId!: string
+
+  @Field(() => GadgetRequestStatus)
+  status!: GadgetRequestStatus
 }

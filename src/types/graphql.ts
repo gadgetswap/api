@@ -11,6 +11,15 @@ export class AuthResult {
   user!: User
 }
 
+export enum GadgetStatus {
+  AVAILABLE = 'AVAILABLE',
+  NOT_AVAILABLE = 'NOT_AVAILABLE'
+}
+
+registerEnumType(GadgetStatus, {
+  name: 'GadgetStatus'
+})
+
 export enum GadgetRequestStatus {
   APPROVED = 'APPROVED',
   DENIED = 'DENIED',

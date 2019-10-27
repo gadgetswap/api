@@ -8,12 +8,27 @@ import {
   LocationModel,
   User
 } from '../models'
+import { GadgetRequestStatus, GadgetStatus } from '../types/graphql'
 import { CreateGadgetInput } from '../types/input'
 
 @Service()
 export class GadgetService {
+  async gadgets(locationId: string): Promise<Gadget[]> {
+    const gadgets = await GadgetModel.find({
+      location: locationId
+    })
+      .populate('location')
+      .select('-requests')
+
+    console.log('gadgets', gadgets)
+
+    return gadgets
+  }
+
   async gadget(gadgetId: string): Promise<Gadget> {
-    const gadget = await GadgetModel.findById(gadgetId).select('-requests')
+    const gadget = await GadgetModel.findById(gadgetId)
+      .populate('location')
+      .select('-requests')
 
     if (!gadget) {
       throw new Error('Gadget not found')
@@ -35,14 +50,9 @@ export class GadgetService {
   }
 
   async createGadget(user: User, data: CreateGadgetInput): Promise<Gadget> {
-    const gadget = await GadgetModel.create({
-      ...data,
-      user
-    })
-
     const { city, country } = data
 
-    await LocationModel.findOneAndUpdate(
+    const location = await LocationModel.findOneAndUpdate(
       {
         city,
         country
@@ -56,6 +66,12 @@ export class GadgetService {
       }
     )
 
+    const gadget = await GadgetModel.create({
+      ...data,
+      location,
+      user
+    })
+
     return gadget
   }
 
@@ -68,6 +84,10 @@ export class GadgetService {
 
     if (!gadget) {
       throw new Error('Gadget not found')
+    }
+
+    if (gadget.status === GadgetStatus.NOT_AVAILABLE) {
+      throw new Error('Gadget not available anymore')
     }
 
     if (helpers.equals(user.id, gadget.user)) {
@@ -100,5 +120,41 @@ export class GadgetService {
     })
 
     return request
+  }
+
+  async updateRequest(
+    gadgetId: string,
+    requestId: string,
+    status: GadgetRequestStatus
+  ): Promise<boolean> {
+    const gadget = await GadgetModel.findById(gadgetId)
+
+    if (!gadget) {
+      throw new Error('Gadget not found')
+    }
+
+    if (gadget.status === GadgetStatus.NOT_AVAILABLE) {
+      throw new Error('Gadget not available anymore')
+    }
+
+    const request = gadget.requests.find(request => request.id === requestId)
+
+    if (!request) {
+      throw new Error('Request not found')
+    }
+
+    request.status = status
+
+    const approved = gadget.requests.filter(
+      request => request.status === GadgetRequestStatus.APPROVED
+    )
+
+    if (approved.length === gadget.quantity) {
+      gadget.status = GadgetStatus.NOT_AVAILABLE
+    }
+
+    await gadget.save()
+
+    return true
   }
 }

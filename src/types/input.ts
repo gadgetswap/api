@@ -1,4 +1,4 @@
-import { Field, InputType } from 'type-graphql'
+import { Field, InputType, Int } from 'type-graphql'
 
 import { Gadget } from '../models'
 
@@ -15,6 +15,9 @@ export class CreateGadgetInput implements Partial<Gadget> {
 
   @Field()
   country!: string
+
+  @Field(() => Int)
+  quantity!: number
 
   @Field(() => [String])
   images!: string[]

@@ -7,8 +7,9 @@ import {
 } from '@typegoose/typegoose'
 import { Field, ID, ObjectType } from 'type-graphql'
 
-import { GadgetRequestStatus } from '../types/graphql'
+import { GadgetRequestStatus, GadgetStatus } from '../types/graphql'
 import { Comment } from './comment'
+import { Location } from './location'
 import { User } from './user'
 
 @ObjectType()
@@ -70,19 +71,32 @@ export class Gadget {
   })
   description!: string
 
-  @Field()
+  @Field(() => [String])
+  @arrayProp({
+    items: String
+  })
+  images!: string[]
+
+  @Field(() => Location)
   @prop({
-    index: true,
+    ref: 'Location',
     required: true
   })
-  city!: string
+  location!: Ref<Location>
 
   @Field()
   @prop({
-    index: true,
-    required: true
+    default: 1
   })
-  country!: string
+  quantity!: number
+
+  @Field(() => GadgetStatus)
+  @prop({
+    default: GadgetStatus.AVAILABLE,
+    enum: Object.values(GadgetStatus),
+    index: true
+  })
+  status!: string
 
   @Field(() => [Comment])
   @arrayProp({
@@ -96,12 +110,6 @@ export class Gadget {
     ref: 'Comment'
   })
   comments!: Ref<Comment>[]
-
-  @Field(() => [String])
-  @arrayProp({
-    items: String
-  })
-  images!: string[]
 
   @Field(() => [GadgetRequest])
   @arrayProp({
