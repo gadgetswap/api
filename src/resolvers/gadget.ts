@@ -1,5 +1,6 @@
 import { Args, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 
+import { Roles } from '../auth'
 import { Gadget, GadgetRequest, User } from '../models'
 import { GadgetService } from '../services'
 import {
@@ -27,7 +28,7 @@ export class GadgetResolver {
   }
 
   @Query(() => [GadgetRequest])
-  @Authorized(['gadget_owner'])
+  @Authorized([Roles.OWNER])
   gadgetRequests(@Args() { gadgetId }: GadgetArgs): Promise<GadgetRequest[]> {
     return this.service.gadgetRequests(gadgetId)
   }
@@ -51,7 +52,7 @@ export class GadgetResolver {
   }
 
   @Mutation(() => Boolean)
-  @Authorized(['gadget_owner'])
+  @Authorized([Roles.OWNER])
   updateRequest(@Args()
   {
     gadgetId,

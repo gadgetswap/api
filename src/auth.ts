@@ -11,11 +11,15 @@ import { helpers } from './lib'
 import { GadgetModel, User, UserModel } from './models'
 import { Context } from './types'
 
+export enum Roles {
+  OWNER = 'OWNER'
+}
+
 export const authChecker: AuthChecker<Context> = async (
   { args: { gadgetId }, context: { user } },
   roles
 ): Promise<boolean> => {
-  if (user && roles.includes('gadget_owner')) {
+  if (user && roles.includes(Roles.OWNER)) {
     const gadget = await GadgetModel.findById(gadgetId)
 
     if (gadget) {
