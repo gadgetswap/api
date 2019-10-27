@@ -1,6 +1,6 @@
-import { DocumentType } from '@typegoose/typegoose'
 import { Service } from 'typedi'
 
+import { helpers } from '../lib'
 import {
   Gadget,
   GadgetModel,
@@ -63,12 +63,8 @@ export class GadgetService {
       throw new Error('Gadget not found')
     }
 
-    // const exists = gadget.requests.find(request =>
-    //   (user as DocumentType<User>)._id.equals(request.user)
-    // ) as DocumentType<GadgetRequest>
-
     const exists = gadget.requests.find(request =>
-      user._id.equals(request.user)
+      helpers.equals(user.id, request.user)
     )
 
     if (exists) {
@@ -86,7 +82,7 @@ export class GadgetService {
 
     await gadget.save()
 
-    const request = gadget.requests[length - 1] as DocumentType<GadgetRequest>
+    const request = gadget.requests[length - 1]
 
     await GadgetModel.populate(request, {
       path: 'user'
