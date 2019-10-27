@@ -55,6 +55,9 @@ export class GadgetArgs {
 export class CreateGadgetArgs {
   @Field()
   data!: CreateGadgetInput
+
+  @Field()
+  locationId!: string
 }
 
 @ArgsType()

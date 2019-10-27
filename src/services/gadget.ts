@@ -1,13 +1,7 @@
 import { Service } from 'typedi'
 
 import { helpers } from '../lib'
-import {
-  Gadget,
-  GadgetModel,
-  GadgetRequest,
-  LocationModel,
-  User
-} from '../models'
+import { Gadget, GadgetModel, GadgetRequest, User } from '../models'
 import { GadgetRequestStatus, GadgetStatus } from '../types/graphql'
 import { CreateGadgetInput } from '../types/input'
 
@@ -47,28 +41,19 @@ export class GadgetService {
     return gadget.requests
   }
 
-  async createGadget(user: User, data: CreateGadgetInput): Promise<Gadget> {
-    const { city, country } = data
-
-    const location = await LocationModel.findOneAndUpdate(
-      {
-        city,
-        country
-      },
-      {
-        city,
-        country
-      },
-      {
-        new: true,
-        upsert: true
-      }
-    )
-
+  async createGadget(
+    user: User,
+    locationId: string,
+    data: CreateGadgetInput
+  ): Promise<Gadget> {
     const gadget = await GadgetModel.create({
       ...data,
-      location,
+      location: locationId,
       user
+    })
+
+    await GadgetModel.populate(gadget, {
+      path: 'location'
     })
 
     return gadget

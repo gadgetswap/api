@@ -37,9 +37,9 @@ export class GadgetResolver {
   @Authorized()
   createGadget(
     @Ctx('user') user: User,
-    @Args() { data }: CreateGadgetArgs
+    @Args() { data, locationId }: CreateGadgetArgs
   ): Promise<Gadget> {
-    return this.service.createGadget(user, data)
+    return this.service.createGadget(user, locationId, data)
   }
 
   @Mutation(() => GadgetRequest)
