@@ -20,8 +20,6 @@ export class GadgetService {
       .populate('location')
       .select('-requests')
 
-    console.log('gadgets', gadgets)
-
     return gadgets
   }
 
@@ -62,6 +60,7 @@ export class GadgetService {
         country
       },
       {
+        new: true,
         upsert: true
       }
     )

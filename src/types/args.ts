@@ -1,7 +1,7 @@
 import { ArgsType, Field } from 'type-graphql'
 
 import { GadgetRequestStatus } from './graphql'
-import { CreateGadgetInput } from './input'
+import { CreateGadgetInput, CreateLocationInput } from './input'
 
 // auth
 
@@ -76,4 +76,18 @@ export class UpdateRequestArgs {
 
   @Field(() => GadgetRequestStatus)
   status!: GadgetRequestStatus
+}
+
+// locations
+
+@ArgsType()
+export class CitiesArgs {
+  @Field()
+  country!: string
+}
+
+@ArgsType()
+export class CreateLocationArgs {
+  @Field()
+  data!: CreateLocationInput
 }
