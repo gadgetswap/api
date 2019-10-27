@@ -7,13 +7,13 @@ import { connect } from 'mongoose'
 import { buildSchema } from 'type-graphql'
 import { Container } from 'typedi'
 
-import { authChecker, getUser } from './auth'
+import { auth, authChecker } from './lib'
 import { resolvers } from './resolvers'
 import { Context } from './types'
 
 const main = async (): Promise<void> => {
   await connect(
-    MONGO_URI as string,
+    String(MONGO_URI),
     {
       useCreateIndex: true,
       useFindAndModify: false,
@@ -31,7 +31,7 @@ const main = async (): Promise<void> => {
 
   const server = new ApolloServer({
     async context({ req }): Promise<Context> {
-      const user = await getUser(req)
+      const user = await auth.getUser(req)
 
       return {
         user

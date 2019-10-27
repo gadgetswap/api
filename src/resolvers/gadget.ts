@@ -1,6 +1,6 @@
 import { Args, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 
-import { Roles } from '../auth'
+import { Roles } from '../lib'
 import { Gadget, GadgetRequest, User } from '../models'
 import { GadgetService } from '../services'
 import {
