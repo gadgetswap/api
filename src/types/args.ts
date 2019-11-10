@@ -1,4 +1,4 @@
-import { ArgsType, Field } from 'type-graphql'
+import { ArgsType, Field, ID } from 'type-graphql'
 
 import { GadgetRequestStatus } from './graphql'
 import { CreateGadgetInput, CreateLocationInput } from './input'
@@ -33,7 +33,7 @@ export class CreateCommentArgs {
   @Field()
   body!: string
 
-  @Field()
+  @Field(() => ID)
   gadgetId!: string
 }
 
@@ -41,13 +41,13 @@ export class CreateCommentArgs {
 
 @ArgsType()
 export class GadgetsArgs {
-  @Field()
+  @Field(() => ID)
   locationId!: string
 }
 
 @ArgsType()
 export class GadgetArgs {
-  @Field()
+  @Field(() => ID)
   gadgetId!: string
 }
 
@@ -56,7 +56,7 @@ export class CreateGadgetArgs {
   @Field()
   data!: CreateGadgetInput
 
-  @Field()
+  @Field(() => ID)
   locationId!: string
 }
 
@@ -65,16 +65,16 @@ export class RequestGadgetArgs {
   @Field()
   description!: string
 
-  @Field()
+  @Field(() => ID)
   gadgetId!: string
 }
 
 @ArgsType()
 export class UpdateRequestArgs {
-  @Field()
+  @Field(() => ID)
   gadgetId!: string
 
-  @Field()
+  @Field(() => ID)
   requestId!: string
 
   @Field(() => GadgetRequestStatus)
