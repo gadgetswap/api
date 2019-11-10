@@ -7,10 +7,14 @@ import { CreateGadgetInput } from '../types/input'
 
 @Service()
 export class GadgetService {
-  async gadgets(locationId: string): Promise<Gadget[]> {
-    const gadgets = await GadgetModel.find({
-      location: locationId
-    })
+  async gadgets(locationId?: string): Promise<Gadget[]> {
+    const options: any = {}
+
+    if (locationId) {
+      options.location = locationId
+    }
+
+    const gadgets = await GadgetModel.find(options)
       .populate('location')
       .select('-requests')
 

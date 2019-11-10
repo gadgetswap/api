@@ -41,8 +41,10 @@ export class CreateCommentArgs {
 
 @ArgsType()
 export class GadgetsArgs {
-  @Field(() => ID)
-  locationId!: string
+  @Field(() => ID, {
+    nullable: true
+  })
+  locationId?: string
 }
 
 @ArgsType()
