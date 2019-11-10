@@ -17,6 +17,9 @@ export class GadgetService {
     const gadgets = await GadgetModel.find(options)
       .populate('location')
       .select('-requests')
+      .sort({
+        createdAt: -1
+      })
 
     return gadgets
   }
