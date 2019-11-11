@@ -16,13 +16,11 @@ export class GadgetResolver {
   constructor(private readonly service: GadgetService) {}
 
   @Query(() => [Gadget])
-  @Authorized()
   gadgets(@Args() { locationId }: GadgetsArgs): Promise<Gadget[]> {
     return this.service.gadgets(locationId)
   }
 
   @Query(() => Gadget)
-  @Authorized()
   gadget(@Args() { gadgetId }: GadgetArgs): Promise<Gadget> {
     return this.service.gadget(gadgetId)
   }

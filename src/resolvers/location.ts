@@ -9,13 +9,11 @@ export class LocationResolver {
   constructor(private readonly service: LocationService) {}
 
   @Query(() => [String])
-  @Authorized()
   countries(): Promise<string[]> {
     return this.service.countries()
   }
 
   @Query(() => [Location])
-  @Authorized()
   locations(@Args() { country }: CitiesArgs): Promise<Location[]> {
     return this.service.locations(country)
   }
