@@ -58,8 +58,8 @@ export class CreateGadgetArgs {
   @Field()
   data!: CreateGadgetInput
 
-  @Field(() => ID)
-  locationId!: string
+  @Field()
+  location!: CreateLocationInput
 }
 
 @ArgsType()

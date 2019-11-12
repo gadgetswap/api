@@ -1,4 +1,16 @@
-import { Args, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+const { AWS_S3_URI } = process.env
+
+import { DocumentType } from '@typegoose/typegoose'
+import {
+  Args,
+  Authorized,
+  Ctx,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root
+} from 'type-graphql'
 
 import { Roles } from '../lib'
 import { Gadget, GadgetRequest, User } from '../models'
@@ -35,9 +47,9 @@ export class GadgetResolver {
   @Authorized()
   createGadget(
     @Ctx('user') user: User,
-    @Args() { data, locationId }: CreateGadgetArgs
+    @Args() { data, location }: CreateGadgetArgs
   ): Promise<Gadget> {
-    return this.service.createGadget(user, locationId, data)
+    return this.service.createGadget(user, data, location)
   }
 
   @Mutation(() => GadgetRequest)
@@ -58,5 +70,10 @@ export class GadgetResolver {
     status
   }: UpdateRequestArgs): Promise<boolean> {
     return this.service.updateRequest(gadgetId, requestId, status)
+  }
+
+  @FieldResolver(() => [String])
+  images(@Root() gadget: DocumentType<Gadget>): string[] {
+    return gadget.images.map(image => `${AWS_S3_URI}/images/${image}`)
   }
 }
