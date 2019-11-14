@@ -18,7 +18,6 @@ export class CommentResolver {
   }
 
   @Query(() => [Comment])
-  @Authorized()
   gadgetComments(@Args() { gadgetId }: GadgetArgs): Promise<Comment[]> {
     return this.service.comments(gadgetId)
   }
