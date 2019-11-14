@@ -7,7 +7,11 @@ export class CommentService {
   async comments(gadgetId: string): Promise<Comment[]> {
     return CommentModel.find({
       gadget: gadgetId
-    }).populate('user')
+    })
+      .populate('user')
+      .sort({
+        createdAt: 1
+      })
   }
 
   async createComment(
