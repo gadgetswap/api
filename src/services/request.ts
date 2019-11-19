@@ -6,27 +6,7 @@ import { GadgetRequestStatus, GadgetStatus } from '../types/graphql'
 
 @Service()
 export class RequestService {
-  async gadgetRequests(gadgetId: string): Promise<GadgetRequest[]> {
-    const gadget = await GadgetModel.findById(gadgetId).populate(
-      'requests.user'
-    )
-
-    if (!gadget) {
-      throw new Error('Gadget not found')
-    }
-
-    return gadget.requests
-  }
-
-  async requests(userId: string): Promise<GadgetRequest[]> {
-    const gadgets = await GadgetModel.find({
-      user: userId
-    }).populate('requests.user')
-
-    return gadgets.map(({ requests }) => requests).flat()
-  }
-
-  async requestGadget(
+  async createRequest(
     user: User,
     gadgetId: string,
     description: string

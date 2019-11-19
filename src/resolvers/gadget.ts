@@ -1,6 +1,6 @@
 const { AWS_S3_URI } = process.env
 
-import { DocumentType } from '@typegoose/typegoose'
+import { DocumentType, isDocument } from '@typegoose/typegoose'
 import {
   Args,
   Authorized,
@@ -13,7 +13,7 @@ import {
 } from 'type-graphql'
 
 import { helpers } from '../lib'
-import { Gadget, User } from '../models'
+import { Gadget, GadgetRequest, User } from '../models'
 import { GadgetService } from '../services'
 import { CreateGadgetArgs, GadgetArgs, GadgetsArgs } from '../types/args'
 
@@ -43,6 +43,20 @@ export class GadgetResolver {
   @FieldResolver(() => [String])
   images(@Root() gadget: DocumentType<Gadget>): string[] {
     return gadget.images.map(image => `${AWS_S3_URI}/images/${image}`)
+  }
+
+  @FieldResolver(() => [GadgetRequest])
+  requests(
+    @Ctx('user') user: User,
+    @Root() gadget: DocumentType<Gadget>
+  ): GadgetRequest[] {
+    const userId = isDocument(gadget.user) ? gadget.user.id : gadget.user
+
+    if (helpers.equals(user.id, userId)) {
+      return gadget.requests
+    }
+
+    return []
   }
 
   @FieldResolver(() => Boolean)
