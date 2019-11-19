@@ -22,6 +22,7 @@ export class GadgetService {
 
     const gadgets = await GadgetModel.find(options)
       .populate('location')
+      .populate('user')
       .select('-requests')
       .sort({
         createdAt: -1
@@ -33,6 +34,7 @@ export class GadgetService {
   async gadget(gadgetId: string): Promise<Gadget> {
     const gadget = await GadgetModel.findById(gadgetId)
       .populate('location')
+      .populate('user')
       .select('-requests')
 
     if (!gadget) {
