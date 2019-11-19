@@ -1,6 +1,12 @@
 import { Service } from 'typedi'
 
-import { Gadget, GadgetModel, LocationModel, User } from '../models'
+import {
+  CommentModel,
+  Gadget,
+  GadgetModel,
+  LocationModel,
+  User
+} from '../models'
 import { CreateGadgetInput, CreateLocationInput } from '../types/input'
 
 @Service()
@@ -35,6 +41,16 @@ export class GadgetService {
     return gadget
   }
 
+  async gadgetsByUser(userId: string): Promise<Gadget[]> {
+    const gadgets = await GadgetModel.find({
+      user: userId
+    }).sort({
+      createdAt: -1
+    })
+
+    return gadgets
+  }
+
   async createGadget(
     user: User,
     data: CreateGadgetInput,
@@ -62,5 +78,23 @@ export class GadgetService {
     })
 
     return gadget
+  }
+
+  async deleteGadget(gadgetId: string): Promise<boolean> {
+    const gadget = await GadgetModel.findById(gadgetId)
+
+    if (!gadget) {
+      throw new Error('Gadget not found')
+    }
+
+    await CommentModel.deleteMany({
+      gadget: gadgetId
+    })
+
+    // TODO: delete images
+
+    await gadget.remove()
+
+    return true
   }
 }

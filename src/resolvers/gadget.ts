@@ -12,7 +12,7 @@ import {
   Root
 } from 'type-graphql'
 
-import { helpers } from '../lib'
+import { helpers, Roles } from '../lib'
 import { Gadget, GadgetRequest, User } from '../models'
 import { GadgetService } from '../services'
 import { CreateGadgetArgs, GadgetArgs, GadgetsArgs } from '../types/args'
@@ -31,6 +31,12 @@ export class GadgetResolver {
     return this.service.gadget(gadgetId)
   }
 
+  @Query(() => [Gadget])
+  @Authorized()
+  gadgetsByUser(@Ctx('user') user: User): Promise<Gadget[]> {
+    return this.service.gadgetsByUser(user.id)
+  }
+
   @Mutation(() => Gadget)
   @Authorized()
   createGadget(
@@ -38,6 +44,12 @@ export class GadgetResolver {
     @Args() { data, location }: CreateGadgetArgs
   ): Promise<Gadget> {
     return this.service.createGadget(user, data, location)
+  }
+
+  @Mutation(() => Boolean)
+  @Authorized(Roles.OWNER)
+  deleteGadget(@Args() { gadgetId }: GadgetArgs): Promise<boolean> {
+    return this.service.deleteGadget(gadgetId)
   }
 
   @FieldResolver(() => [String])
