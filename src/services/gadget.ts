@@ -1,12 +1,6 @@
 import { Service } from 'typedi'
 
-import {
-  Gadget,
-  GadgetModel,
-  GadgetRequest,
-  LocationModel,
-  User
-} from '../models'
+import { Gadget, GadgetModel, LocationModel, User } from '../models'
 import { CreateGadgetInput, CreateLocationInput } from '../types/input'
 
 @Service()
@@ -39,18 +33,6 @@ export class GadgetService {
     }
 
     return gadget
-  }
-
-  async gadgetRequests(gadgetId: string): Promise<GadgetRequest[]> {
-    const gadget = await GadgetModel.findById(gadgetId).populate(
-      'requests.user'
-    )
-
-    if (!gadget) {
-      throw new Error('Gadget not found')
-    }
-
-    return gadget.requests
   }
 
   async createGadget(

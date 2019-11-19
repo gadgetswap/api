@@ -16,6 +16,7 @@ import { helpers } from '../lib'
 import { Gadget, GadgetRequest, User } from '../models'
 import { GadgetService } from '../services'
 import { CreateGadgetArgs, GadgetArgs, GadgetsArgs } from '../types/args'
+import { GadgetRequestStatus } from '../types/graphql'
 
 @Resolver(Gadget)
 export class GadgetResolver {
@@ -53,7 +54,9 @@ export class GadgetResolver {
     const userId = isDocument(gadget.user) ? gadget.user.id : gadget.user
 
     if (helpers.equals(user.id, userId)) {
-      return gadget.requests
+      return gadget.requests.filter(
+        ({ status }) => status === GadgetRequestStatus.PENDING
+      )
     }
 
     return []
