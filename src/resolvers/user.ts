@@ -21,9 +21,9 @@ export class UserResolver {
   }
 
   @Mutation(() => AuthResult)
-  register(@Args() { email, name, password }: RegisterArgs): Promise<
-    AuthResult
-  > {
+  register(
+    @Args() { email, name, password }: RegisterArgs
+  ): Promise<AuthResult> {
     return this.service.register(name, email, password)
   }
 }

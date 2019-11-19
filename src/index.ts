@@ -12,15 +12,12 @@ import { resolvers } from './resolvers'
 import { Context } from './types'
 
 const main = async (): Promise<void> => {
-  await connect(
-    String(MONGO_URI),
-    {
-      useCreateIndex: true,
-      useFindAndModify: false,
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    }
-  )
+  await connect(String(MONGO_URI), {
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
 
   const schema = await buildSchema({
     authChecker,

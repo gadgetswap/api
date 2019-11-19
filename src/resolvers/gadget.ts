@@ -63,12 +63,10 @@ export class GadgetResolver {
 
   @Mutation(() => Boolean)
   @Authorized(Roles.OWNER)
-  updateRequest(@Args()
-  {
-    gadgetId,
-    requestId,
-    status
-  }: UpdateRequestArgs): Promise<boolean> {
+  updateRequest(
+    @Args()
+    { gadgetId, requestId, status }: UpdateRequestArgs
+  ): Promise<boolean> {
     return this.service.updateRequest(gadgetId, requestId, status)
   }
 
