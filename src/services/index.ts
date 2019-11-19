@@ -1,4 +1,5 @@
 export { CommentService } from './comment'
 export { GadgetService } from './gadget'
 export { LocationService } from './location'
+export { RequestService } from './request'
 export { UserService } from './user'

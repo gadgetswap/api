@@ -12,16 +12,10 @@ import {
   Root
 } from 'type-graphql'
 
-import { Roles } from '../lib'
-import { Gadget, GadgetRequest, User } from '../models'
+import { helpers } from '../lib'
+import { Gadget, User } from '../models'
 import { GadgetService } from '../services'
-import {
-  CreateGadgetArgs,
-  GadgetArgs,
-  GadgetsArgs,
-  RequestGadgetArgs,
-  UpdateRequestArgs
-} from '../types/args'
+import { CreateGadgetArgs, GadgetArgs, GadgetsArgs } from '../types/args'
 
 @Resolver(Gadget)
 export class GadgetResolver {
@@ -37,12 +31,6 @@ export class GadgetResolver {
     return this.service.gadget(gadgetId)
   }
 
-  @Query(() => [GadgetRequest])
-  @Authorized(Roles.OWNER)
-  gadgetRequests(@Args() { gadgetId }: GadgetArgs): Promise<GadgetRequest[]> {
-    return this.service.gadgetRequests(gadgetId)
-  }
-
   @Mutation(() => Gadget)
   @Authorized()
   createGadget(
@@ -52,26 +40,18 @@ export class GadgetResolver {
     return this.service.createGadget(user, data, location)
   }
 
-  @Mutation(() => GadgetRequest)
-  @Authorized()
-  requestGadget(
-    @Ctx('user') user: User,
-    @Args() { description, gadgetId }: RequestGadgetArgs
-  ): Promise<GadgetRequest> {
-    return this.service.requestGadget(user, gadgetId, description)
-  }
-
-  @Mutation(() => Boolean)
-  @Authorized(Roles.OWNER)
-  updateRequest(
-    @Args()
-    { gadgetId, requestId, status }: UpdateRequestArgs
-  ): Promise<boolean> {
-    return this.service.updateRequest(gadgetId, requestId, status)
-  }
-
   @FieldResolver(() => [String])
   images(@Root() gadget: DocumentType<Gadget>): string[] {
     return gadget.images.map(image => `${AWS_S3_URI}/images/${image}`)
+  }
+
+  @FieldResolver(() => Boolean)
+  isRequested(
+    @Ctx('user') user: User,
+    @Root() gadget: DocumentType<Gadget>
+  ): boolean {
+    return !!gadget.requests.find(request =>
+      helpers.equals(user.id, request.user)
+    )
   }
 }

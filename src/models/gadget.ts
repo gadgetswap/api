@@ -111,7 +111,6 @@ export class Gadget {
   })
   comments!: Ref<Comment>[]
 
-  @Field(() => [GadgetRequest])
   @arrayProp({
     items: GadgetRequest
   })
