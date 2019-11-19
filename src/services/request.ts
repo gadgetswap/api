@@ -64,7 +64,10 @@ export class RequestService {
       throw new Error('Gadget not found')
     }
 
-    if (gadget.status === GadgetStatus.NOT_AVAILABLE) {
+    if (
+      status === GadgetRequestStatus.APPROVED &&
+      gadget.status === GadgetStatus.NOT_AVAILABLE
+    ) {
       throw new Error('Gadget not available anymore')
     }
 
@@ -82,6 +85,8 @@ export class RequestService {
 
     if (approved.length === gadget.quantity) {
       gadget.status = GadgetStatus.NOT_AVAILABLE
+    } else {
+      gadget.status = GadgetStatus.AVAILABLE
     }
 
     await gadget.save()
